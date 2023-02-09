@@ -1,7 +1,9 @@
 package routers
 
 import (
+	jwt "PracticeWeb/middleware"
 	"PracticeWeb/pkg/setting"
+	"PracticeWeb/routers/api"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,11 +16,14 @@ func InitRouter() *gin.Engine {
 
 	gin.SetMode(setting.RunMode)
 
-	r.GET("/test", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "test",
-		})
-	})
+	//r.GET("/test", func(c *gin.Context) {
+	//	c.JSON(200, gin.H{
+	//		"message": "test",
+	//	})
+	//})
+	r.POST("/user/add", api.AddUser)
+	r.GET("/auth", api.GetAuth)
+	r.Use(jwt.JWT())
 
 	return r
 }

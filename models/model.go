@@ -3,10 +3,9 @@ package models
 import (
 	"PracticeWeb/pkg/setting"
 	"fmt"
-	"log"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"log"
 )
 
 var db *gorm.DB
