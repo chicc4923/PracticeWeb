@@ -7,18 +7,23 @@ import (
 	"net/http"
 )
 
+// AddUser Add new user to mysql
 func AddUser(c *gin.Context) {
 	var data models.User
 	_ = c.ShouldBindJSON(&data)
-	exsit := models.ExistUser(data.Username)
-	if !exsit {
-		models.AddUser(&data)
+	code := errors.INVALID_PARAMS
+	exist := models.ExistUser(data.Email)
+
+	// if email exists,return error
+	if exist == true {
+		code = errors.ERROR_EXIST_Email
 	} else {
-		//TODO:用户存在时前端提示用户名已存在
+		code = errors.SUCCESS
+		models.AddUser(&data)
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"status":  "add user success",
+		"code":    code,
 		"data":    data,
-		"message": errors.GetMsg(200),
+		"message": errors.GetMsg(code),
 	})
 }
