@@ -27,3 +27,13 @@ func AddUser(user *User) bool {
 
 	return true
 }
+
+func CheckAuth(username, password string) bool {
+	var user User
+	db.Select("id").Where(User{Username: username, Password: password}).First(&user)
+	if user.Userid > 0 {
+		return true
+	}
+
+	return false
+}

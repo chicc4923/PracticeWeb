@@ -13,18 +13,24 @@ import (
 
 var test int
 
-type auth struct {
-	Username string `valid:"Required; MaxSize(20)"`
-	Password string `valid:"Required; MaxSize(40)"`
+type User struct {
+	Userid   int    `gorm:"primary_key" json:"userid"`
+	Username string `gorm:"username" json:"username" banding:"require"`
+	Password string `gorm:"password" json:"password" banding:"require"`
+	Email    string `gorm:"email" json:"email"`
 }
 
 func GetAuth(c *gin.Context) {
+	var user User
 	username := c.Query("username")
 	password := c.Query("password")
 
 	valid := validation.Validation{}
-	a := auth{Username: username, Password: password}
-	ok, _ := valid.Valid(&a)
+	//a := User{Username: username, Password: password}
+	user.Username = username
+	user.Password = password
+
+	ok, _ := valid.Valid(&user)
 
 	data := make(map[string]interface{})
 	code := errors.INVALID_PARAMS
